@@ -17,8 +17,8 @@ public:
 	/* cleans all the structures */
 	void destroy();
 
-	/* is visible */
-	bool isOnScreen();
+	/* returns if the entity is still alive */
+	bool isAlive();
 private:
 	float fallingSpeed;
 	bool onScreen = true;

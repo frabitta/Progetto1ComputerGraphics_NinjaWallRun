@@ -3,6 +3,7 @@
 #include "GraphicComponent.h"
 #include "Giocatore.h"
 #include "Engine.h"
+#include "CollidingEntityCollection.h"
 
 // Forward declaration of Engine class
 class Engine;
@@ -33,6 +34,7 @@ private:
 	GraphicComponent wall;
 
 	Giocatore player;
+	CollidingEntityCollection spine;
 
 	Engine* engine;
 };

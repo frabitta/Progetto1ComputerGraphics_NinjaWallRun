@@ -28,7 +28,7 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\source\BoundingBox.cpp" />
     <ClCompile Include="src\source\CollidingEntity.cpp" />
-    <ClCompile Include="src\source\CollidingEntityContainer.cpp" />
+    <ClCompile Include="src\source\CollidingEntityCollection.cpp" />
     <ClCompile Include="src\source\Engine.cpp" />
     <ClCompile Include="src\source\FallingEntity.cpp" />
     <ClCompile Include="src\source\Giocatore.cpp" />
@@ -43,7 +43,7 @@
   <ItemGroup>
     <ClInclude Include="src\headers\BoundingBox.h" />
     <ClInclude Include="src\headers\CollidingEntity.h" />
-    <ClInclude Include="src\headers\CollidingEntityContainer.h" />
+    <ClInclude Include="src\headers\CollidingEntityCollection.h" />
     <ClInclude Include="src\headers\Engine.h" />
     <ClInclude Include="src\headers\FallingEntity.h" />
     <ClInclude Include="src\headers\Giocatore.h" />

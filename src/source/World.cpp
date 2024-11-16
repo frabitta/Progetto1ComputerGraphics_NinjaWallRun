@@ -18,7 +18,6 @@ GLuint UNI_skyProg_screenRes, UNI_skyProg_currentTime;
 GLuint UNI_wallProg_screenRes, UNI_wallProg_currentTime, UNI_wallProg_offset;
 GLuint UNI_entity_MatProj, UNI_entity_MatModel;
 
-FallingEntity spinaTest;
 GraphicComponent spinaGC;
 
 // TODO
@@ -67,6 +66,7 @@ int World::init(const int height, const int width, Engine* engine) {
 	// player
 	this->player.init(entityProg, UNI_entity_MatModel, leftWallPos, rightWallPos);
 	// spina
+	this->spine.init();
 	vertici.clear();
 	vertici.push_back(vec3(-1, -1, 0));
 	vertici.push_back(vec3(1, -1, 0));
@@ -76,8 +76,10 @@ int World::init(const int height, const int width, Engine* engine) {
 	colori.push_back(vec4(0, 0, 0,1));
 	colori.push_back(vec4(1, 0, 0,1));
 	spinaGC.loadVertices(vertici, colori, GL_TRIANGLES, entityProg);
-	spinaTest.init(entityProg, UNI_entity_MatModel, spinaGC, vec2(leftWallPos.x,this->world_height), 300.0f);
-	
+	FallingEntity* spinaTest = new FallingEntity;
+	spinaTest->init(entityProg, UNI_entity_MatModel, spinaGC, vec2(leftWallPos.x,this->world_height), 300.0f);
+	this->spine.push(spinaTest);
+
 	return 0;
 }
 
@@ -90,12 +92,15 @@ void World::setupNewGame() {
 void World::update(float deltaTime) {
 	// aggiorna posizioni
 	this->player.update(deltaTime);
-	spinaTest.update(deltaTime);
+	this->spine.update(deltaTime);
 	// controlla collisioni
 	
-	BoundingBox bb = spinaTest.getBB();
-	if (this->player.checkCollision(bb)) {
-		cout << "TOCCATO" << endl;
+	vector<BoundingBox> bbList = this->spine.getBBlist();
+	for (int i = 0; i < bbList.size(); i++) {
+		if (this->player.checkCollision(bbList[i])) {
+			this->spine.ignore(i);
+			this->player.takeDamage();
+		}
 	}
 	
 	if (!this->player.isAlive()) {
@@ -131,7 +136,7 @@ void World::render(float time) {
 
 	// render player
 	this->player.render(time);
-	spinaTest.render(time);
+	this->spine.render(time);
 	// render UI
 	
 }

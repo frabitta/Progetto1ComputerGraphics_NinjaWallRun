@@ -19,7 +19,7 @@ public:
 	/* dice se il player collide con una entity*/
 	bool checkCollision(BoundingBox bb);
 
-	/* is alive*/
+	/* returns if the entity is still alive */
 	bool isAlive();
 
 	/* takes damage */

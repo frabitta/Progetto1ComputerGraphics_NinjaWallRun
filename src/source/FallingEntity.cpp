@@ -25,7 +25,7 @@ void FallingEntity::update(float deltaTime) {
 }
 
 void FallingEntity::render(float time) {
-	if (this->isOnScreen()) {
+	if (this->isAlive()) {
 		CollidingEntity::render(time);
 	}
 }
@@ -34,6 +34,6 @@ void FallingEntity::destroy() {
 	this->onScreen = false;
 }
 
-bool FallingEntity::isOnScreen() {
+bool FallingEntity::isAlive() {
 	return this->onScreen;
 }

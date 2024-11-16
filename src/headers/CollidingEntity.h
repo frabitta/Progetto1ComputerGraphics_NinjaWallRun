@@ -19,6 +19,9 @@ public:
 
 	/* returns the bounding box of the entity*/
 	BoundingBox getBB();
+	
+	/* returns if the entity is still alive */
+	virtual bool isAlive() = 0;
 protected:
 	BoundingBox BB;
 	vec2 position = vec2(0.,0.);

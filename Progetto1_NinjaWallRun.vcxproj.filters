@@ -78,10 +78,10 @@
     <ClCompile Include="src\source\CollidingEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\CollidingEntityContainer.cpp">
+    <ClCompile Include="src\source\FallingEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\FallingEntity.cpp">
+    <ClCompile Include="src\source\CollidingEntityCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,10 +143,10 @@
     <ClInclude Include="src\headers\CollidingEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\CollidingEntityContainer.h">
+    <ClInclude Include="src\headers\FallingEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\FallingEntity.h">
+    <ClInclude Include="src\headers\CollidingEntityCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
