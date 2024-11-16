@@ -34,7 +34,7 @@ void main()
 
         vec2 starPos = vec2(
             srandom(float(i)),
-            srandom(float(i)-starNumber) - currentTime*0.001
+            srandom(float(i)-starNumber) - currentTime*0.005
         );
 
         if (starPos.y < -1.005) {

@@ -10,7 +10,7 @@ static World* engineWorld;
 // public ----------------------------------------------------------------------------
 int Engine::init(const int height, const int width, const char windowTitle[]) {
     engine = this;
-
+    srand(time(NULL));
     // init window
     int success = initializeOpenGLWindow(height, width, windowTitle);
     if (success != 0) {

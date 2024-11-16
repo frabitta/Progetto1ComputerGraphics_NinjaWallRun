@@ -1,15 +1,15 @@
 #include "FallingEntity.h"
 
-void FallingEntity::init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicComponent gc, vec2 pos, float fallingSpeed) {
+void FallingEntity::init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicComponent gc, vec2 pos, bool right, float fallingSpeed) {
 	vector<GraphicComponent> gcList;
 	gcList.push_back(gc);
 	CollidingEntity::init(shaderProg, uniformModelMatrix, gcList);
 
-	vec2 offset = vec2(30,0);
+	vec2 offset = right ? vec2(-30, 0) : vec2(30,0);
 	this->position = pos + offset;
 	this->fallingSpeed = fallingSpeed;
 	this->size = 50;
-	this->angle = -90;
+	this->angle = right ? 90 : -90;
 	this->updateMatrix();
 
 	this->BB.generateFromVector(gc.getVertices());

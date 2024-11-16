@@ -19,8 +19,20 @@ GLuint UNI_wallProg_screenRes, UNI_wallProg_currentTime, UNI_wallProg_offset;
 GLuint UNI_entity_MatProj, UNI_entity_MatModel;
 
 GraphicComponent spinaGC;
+vec2 leftWallPos;
+vec2 rightWallPos;
 
-// TODO
+float maxSpeed = 700.0;
+float fallingSpeed = 300.0;
+float speedIncrease = 5.0;
+float genDelta = 2.0;
+float genDecrease = 0.1;
+
+float randomFloat()
+{
+	return (float)(rand()) / (float)(RAND_MAX);
+}
+
 int World::init(const int height, const int width, Engine* engine) {
 	this->engine = engine;
 	this->world_width = width;
@@ -61,12 +73,11 @@ int World::init(const int height, const int width, Engine* engine) {
 	this->wall.loadVertices(vertici, colori, GL_TRIANGLE_FAN, wallProg);
 	
 	// init entities -----------------------
-	vec2 leftWallPos = vec2(this->world_width * 0.11, this->world_width * 0.10);
-	vec2 rightWallPos = vec2(this->world_width - this->world_width * 0.11, this->world_width * 0.10);
+	leftWallPos = vec2(this->world_width * 0.11, this->world_width * 0.10);
+	rightWallPos = vec2(this->world_width - this->world_width * 0.11, this->world_width * 0.10);
 	// player
 	this->player.init(entityProg, UNI_entity_MatModel, leftWallPos, rightWallPos);
-	// spina
-	this->spine.init();
+	// spina GC
 	vertici.clear();
 	vertici.push_back(vec3(-1, -1, 0));
 	vertici.push_back(vec3(1, -1, 0));
@@ -76,25 +87,28 @@ int World::init(const int height, const int width, Engine* engine) {
 	colori.push_back(vec4(0, 0, 0,1));
 	colori.push_back(vec4(1, 0, 0,1));
 	spinaGC.loadVertices(vertici, colori, GL_TRIANGLES, entityProg);
+	// spine
+	this->spine.init();
+	/*
 	FallingEntity* spinaTest = new FallingEntity;
 	spinaTest->init(entityProg, UNI_entity_MatModel, spinaGC, vec2(leftWallPos.x,this->world_height), 300.0f);
 	this->spine.push(spinaTest);
-
+	*/
 	return 0;
 }
 
 // TODO
 void World::setupNewGame() {
-
+	this->spine.init();
 }
 
-// TODO
+float generateTimer = 1.0;
 void World::update(float deltaTime) {
 	// aggiorna posizioni
 	this->player.update(deltaTime);
 	this->spine.update(deltaTime);
-	// controlla collisioni
 	
+	// controlla collisioni
 	vector<BoundingBox> bbList = this->spine.getBBlist();
 	for (int i = 0; i < bbList.size(); i++) {
 		if (this->player.checkCollision(bbList[i])) {
@@ -102,15 +116,32 @@ void World::update(float deltaTime) {
 			this->player.takeDamage();
 		}
 	}
-	
+
+	// controlla se il player è in vita, altrimenti fa perdere
 	if (!this->player.isAlive()) {
 		this->engine->gameLost();
 		return;
 	}
+
 	// genera shuriken,spine,monete
+	generateTimer -= deltaTime;
+	if (generateTimer <= 0.0f) {
+		FallingEntity* spinaTest = new FallingEntity;
+		vec2 genPos = vec2(leftWallPos.x, this->world_height);
+		bool right = false;
+		if (rand() % 2 != 0) {
+			genPos.x = rightWallPos.x;
+			right = true;
+		}
+		spinaTest->init(entityProg, UNI_entity_MatModel, spinaGC, genPos, right, fallingSpeed);
+		this->spine.push(spinaTest);
+		generateTimer = randomFloat() * genDelta + 1.0;
+		genDelta -= genDecrease;
+		if (fallingSpeed < maxSpeed)
+			fallingSpeed += speedIncrease;
+	}
 }
 
-// TODO
 void World::render(float time) {
 	// update del tempo alle shader
 	glUseProgram(skyProg);
@@ -133,10 +164,11 @@ void World::render(float time) {
 	wall.render();
 	
 	// render monete, ostacoli
+	this->spine.render(time);
 
 	// render player
 	this->player.render(time);
-	this->spine.render(time);
+	
 	// render UI
 	
 }

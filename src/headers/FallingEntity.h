@@ -6,7 +6,7 @@
 class FallingEntity : public CollidingEntity {
 public:
 	/* inizializza le strutture */
-	void init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicComponent gc, vec2 pos, float fallingSpeed);
+	void init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicComponent gc, vec2 pos, bool right, float fallingSpeed);
 
 	/* aggiorna lo stato del giocatore*/
 	void update(float deltaTime);
