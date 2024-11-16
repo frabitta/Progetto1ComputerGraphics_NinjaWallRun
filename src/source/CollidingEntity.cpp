@@ -15,9 +15,25 @@ void CollidingEntity::updateMatrix() {
 	this->Model = mat;
 
 	this->BB.updateMat(this->Model);
-	glUniformMatrix4fv(this->uniformModelMatrix, 1, GL_FALSE, value_ptr(this->Model));
 }
 
-void CollidingEntity::init(GLuint uniformModelMatrix) {
+void CollidingEntity::render(float time) {
+	glUseProgram(this->shaderProg);
+	// glUniform1f(this->uniformTime, time);
+	glUniformMatrix4fv(this->uniformModelMatrix, 1, GL_FALSE, value_ptr(this->Model));
+	for (int i = 0; i < this->graphicList.size(); i++) {
+		this->graphicList[i].render();
+	}
+}
+
+void CollidingEntity::init(GLuint shaderProg, GLuint uniformModelMatrix, vector<GraphicComponent> graphicList) {
+	this->shaderProg = shaderProg;
 	this->uniformModelMatrix = uniformModelMatrix;
+	this->graphicList = graphicList;
+}
+
+void CollidingEntity::destroy() {
+	for (int i = 0; i < this->graphicList.size(); i++) {
+		this->graphicList[i].deleteBuffers();
+	}
 }

@@ -13,14 +13,8 @@ public:
 	/* aggiorna lo stato del giocatore*/
 	void update(float deltaTime);
 
-	/* renderizza il giocatore */
-	void render(float time);
-
 	/* triggera il cambio di lato*/
 	void changeLato();
-
-	/* cleans all the structures */
-	void destroy();
 
 	/* dice se il player collide con una entity*/
 	bool checkCollision(BoundingBox bb);
@@ -31,8 +25,6 @@ public:
 	/* takes damage */
 	void takeDamage();
 private:
-	GraphicComponent scarfGC;
-	GraphicComponent playerGC;
 	stati stato;
 	vec2 leftPos;
 	vec2 rightPos;

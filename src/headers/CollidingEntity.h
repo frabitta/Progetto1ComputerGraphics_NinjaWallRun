@@ -1,20 +1,21 @@
 #pragma once
 #include "lib.h"
 #include "BoundingBox.h"
+#include "GraphicComponent.h"
 
 class CollidingEntity {
 public:
 	/* inizializza le strutture */
-	void init(GLuint uniformModelMatrix);
+	void init(GLuint shaderProg, GLuint uniformModelMatrix, vector<GraphicComponent> graphicList);
 
 	/* aggiorna lo stato del giocatore*/
 	virtual void update(float deltaTime) = 0;
 
 	/* renderizza il giocatore */
-	virtual void render(float time) = 0;
+	void render(float time);
 
 	/* cleans all the structures */
-	virtual void destroy() = 0;
+	void destroy();
 
 	/* returns the bounding box of the entity*/
 	BoundingBox getBB();
@@ -25,7 +26,10 @@ protected:
 	float angle = 0;
 	bool mirror = false;
 	mat4 Model = mat4(1.0f);
+
+	GLuint shaderProg;
 	GLuint uniformModelMatrix;
+	vector<GraphicComponent> graphicList;
 
 	void updateMatrix();
 };

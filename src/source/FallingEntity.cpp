@@ -1,9 +1,10 @@
 #include "FallingEntity.h"
 
-void FallingEntity::init(GLuint uniformModelMatrix, GraphicComponent gc, vec2 pos, float fallingSpeed) {
-	CollidingEntity::init(uniformModelMatrix);
-	this->uniformModelMatrix = uniformModelMatrix;
-	this->gc = gc;
+void FallingEntity::init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicComponent gc, vec2 pos, float fallingSpeed) {
+	vector<GraphicComponent> gcList;
+	gcList.push_back(gc);
+	CollidingEntity::init(shaderProg, uniformModelMatrix, gcList);
+
 	this->position = pos;
 	this->fallingSpeed = fallingSpeed;
 	this->size = 50;
@@ -26,8 +27,7 @@ void FallingEntity::update(float deltaTime) {
 
 void FallingEntity::render(float time) {
 	if (this->isOnScreen()) {
-		glUniformMatrix4fv(this->uniformModelMatrix, 1, GL_FALSE, value_ptr(this->Model));
-		this->gc.render();
+		CollidingEntity::render(time);
 	}
 }
 

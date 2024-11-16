@@ -2,19 +2,25 @@
 #include "geometrie.h"
 
 void Giocatore::init(GLuint shaderProg, GLuint uniformModelMatrix, vec2 leftPos, vec2 rightPos) {
-	CollidingEntity::init(uniformModelMatrix);
+	vector<GraphicComponent> gcList;
 	this->leftPos = leftPos;
 	this->rightPos = rightPos;
 
 	vector<vec3> vertici = {};
 	vector<vec4> colori = {};
 
-	init_curvaHModel(vertici, colori, "scarfModel.txt");
-	this->scarfGC.loadVertices(vertici, colori, GL_TRIANGLE_FAN, shaderProg);
-
+	GraphicComponent playerModel;
 	init_curvaHModel(vertici, colori, "playerModel.txt");
-	this->playerGC.loadVertices(vertici, colori, GL_TRIANGLE_FAN, shaderProg);
+	playerModel.loadVertices(vertici, colori, GL_TRIANGLE_FAN, shaderProg);
+	gcList.push_back(playerModel);
 	this->BB.generateFromVector(vertici);
+
+	GraphicComponent scarfGC;
+	init_curvaHModel(vertici, colori, "scarfModel.txt");
+	scarfGC.loadVertices(vertici, colori, GL_TRIANGLE_FAN, shaderProg);
+	gcList.push_back(scarfGC);
+
+	CollidingEntity::init(shaderProg, uniformModelMatrix, gcList);
 
 	this->vita = 1;
 	this->stato = l;
@@ -61,13 +67,6 @@ void Giocatore::update(float deltaTime) {
 	}
 }
 
-void Giocatore::render(float time) {
-	glUniformMatrix4fv(this->uniformModelMatrix, 1, GL_FALSE, value_ptr(this->Model));
-
-	this->playerGC.render();
-	this->scarfGC.render();
-}
-
 void Giocatore::changeLato() {
 	if (this->stato == l) {
 		this->angle = 0;
@@ -79,11 +78,6 @@ void Giocatore::changeLato() {
 		this->mirror = true;
 		this->stato = moving_l;
 	}
-}
-
-void Giocatore::destroy() {
-	this->playerGC.deleteBuffers();
-	this->scarfGC.deleteBuffers();
 }
 
 bool Giocatore::checkCollision(BoundingBox bb) {

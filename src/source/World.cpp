@@ -72,7 +72,7 @@ int World::init(const int height, const int width, Engine* engine) {
 	colori.push_back(vec4(1, 0, 0,1));
 	colori.push_back(vec4(0, 0, 0,1));
 	spinaGC.loadVertices(vertici, colori, GL_TRIANGLES, entityProg);
-	spinaTest.init(UNI_entity_MatModel, spinaGC, vec2(world_width * 0.3, world_height * 0.7), 10.0f);
+	spinaTest.init(entityProg, UNI_entity_MatModel, spinaGC, vec2(world_width * 0.3, world_height * 0.7), 10.0f);
 	
 	return 0;
 }
