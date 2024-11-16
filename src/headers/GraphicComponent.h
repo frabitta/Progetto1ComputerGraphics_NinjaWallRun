@@ -19,6 +19,8 @@ public:
     void render();
     /* deletes the structures allocated */
     void deleteBuffers();
+    /* returns a vector of the vertices currently loaded */
+    vector<vec3> getVertices();
 private:
     GLuint VAO;             // identificatore del Vertex Array Object (VAO)
     GLuint VBO_vertices;    // identificatore del Vertex Buffer Object (VBO): contiene le coordinate dei vertici dell'oggetto.

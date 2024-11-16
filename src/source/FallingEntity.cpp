@@ -5,15 +5,14 @@ void FallingEntity::init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicCo
 	gcList.push_back(gc);
 	CollidingEntity::init(shaderProg, uniformModelMatrix, gcList);
 
-	this->position = pos;
+	vec2 offset = vec2(30,0);
+	this->position = pos + offset;
 	this->fallingSpeed = fallingSpeed;
 	this->size = 50;
+	this->angle = -90;
 	this->updateMatrix();
-	/*
-	BoundingBox BB;
-	float angle = 0;
-	bool mirror = false;
-	*/
+
+	this->BB.generateFromVector(gc.getVertices());
 }
 
 void FallingEntity::update(float deltaTime) {

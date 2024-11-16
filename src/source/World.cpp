@@ -61,18 +61,22 @@ int World::init(const int height, const int width, Engine* engine) {
 	init_plane(vertici, colori, vec2(-1., -1.), vec2(1., 1.), vec4(1.,0.,0.,1.));
 	this->wall.loadVertices(vertici, colori, GL_TRIANGLE_FAN, wallProg);
 	
-	// init entities: player, monete, spine, shuriken
-	this->player.init(entityProg, UNI_entity_MatModel, vec2(this->world_width * 0.11, this->world_width * 0.10), vec2(this->world_width - this->world_width * 0.11, this->world_width * 0.10));
+	// init entities -----------------------
+	vec2 leftWallPos = vec2(this->world_width * 0.11, this->world_width * 0.10);
+	vec2 rightWallPos = vec2(this->world_width - this->world_width * 0.11, this->world_width * 0.10);
+	// player
+	this->player.init(entityProg, UNI_entity_MatModel, leftWallPos, rightWallPos);
+	// spina
 	vertici.clear();
 	vertici.push_back(vec3(-1, -1, 0));
 	vertici.push_back(vec3(1, -1, 0));
 	vertici.push_back(vec3(0, 1, 0));
 	colori.clear();
-	colori.push_back(vec4(1, 0, 0,1));
-	colori.push_back(vec4(1, 0, 0,1));
 	colori.push_back(vec4(0, 0, 0,1));
+	colori.push_back(vec4(0, 0, 0,1));
+	colori.push_back(vec4(1, 0, 0,1));
 	spinaGC.loadVertices(vertici, colori, GL_TRIANGLES, entityProg);
-	spinaTest.init(entityProg, UNI_entity_MatModel, spinaGC, vec2(world_width * 0.3, world_height * 0.7), 10.0f);
+	spinaTest.init(entityProg, UNI_entity_MatModel, spinaGC, vec2(leftWallPos.x,this->world_height), 300.0f);
 	
 	return 0;
 }
@@ -88,13 +92,12 @@ void World::update(float deltaTime) {
 	this->player.update(deltaTime);
 	spinaTest.update(deltaTime);
 	// controlla collisioni
-	/*
-	BoundingBox bb;
+	
+	BoundingBox bb = spinaTest.getBB();
 	if (this->player.checkCollision(bb)) {
-		cout << "TOCCATO";
+		cout << "TOCCATO" << endl;
 	}
-	*/
-
+	
 	if (!this->player.isAlive()) {
 		this->engine->gameLost();
 		return;

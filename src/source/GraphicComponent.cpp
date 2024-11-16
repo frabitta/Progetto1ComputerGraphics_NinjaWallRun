@@ -41,3 +41,8 @@ void GraphicComponent::deleteBuffers() {
     glDeleteBuffers(1, &this->VBO_colors);
     glDeleteVertexArrays(1, &this->VAO);
 }
+
+vector<vec3> GraphicComponent::getVertices()
+{
+    return this->vertices;
+}
