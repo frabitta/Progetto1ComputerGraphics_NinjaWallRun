@@ -34,6 +34,7 @@
     <ClCompile Include="src\source\Giocatore.cpp" />
     <ClCompile Include="src\source\glad.c" />
     <ClCompile Include="src\source\GraphicComponent.cpp" />
+    <ClCompile Include="src\source\gui.cpp" />
     <ClCompile Include="src\source\inizializzazioniGL.cpp" />
     <ClCompile Include="src\source\main.cpp" />
     <ClCompile Include="src\source\ShaderMaker.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="src\headers\FallingEntity.h" />
     <ClInclude Include="src\headers\Giocatore.h" />
     <ClInclude Include="src\headers\GraphicComponent.h" />
+    <ClInclude Include="src\headers\gui.h" />
     <ClInclude Include="src\headers\inizializzazioniGL.h" />
     <ClInclude Include="src\headers\lib.h" />
     <ClInclude Include="src\headers\ShaderMaker.h" />

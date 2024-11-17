@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "lib.h"
 #include "World.h"
+#include "gui.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 // used by the callbacks
@@ -27,12 +28,16 @@ int Engine::init(const int height, const int width, const char windowTitle[]) {
     glfwSetKeyCallback(window, key_callback);
     // mouse press callback (shuriken)
 
+    // imgui init
+    GUI_Initialize(window,this);
+
     this->gameStatus = active;
 
     return 0;
 };
 
 void Engine::play() {
+    float pausedTime = glfwGetTime();;
     while (this->gameStatus != terminated) {
         switch (this->gameStatus)
         {
@@ -40,22 +45,38 @@ void Engine::play() {
             // pulisci tutto prima della prossima partita
             this->world->setupNewGame();
             this->gameplayLoop();
+            pausedTime = glfwGetTime();
             break;
         case lost:
-            this->showDeathScreen();
+            this->showDeathScreen(pausedTime);
+            break;
+        case paused:
             break;
         default:
             break;
         }
     }
-    this->terminate();
+    this->close();
 }
 
 void Engine::gameLost() {
     this->gameStatus = lost;
 }
 
-int Engine::terminate() {
+void Engine::playAgain() {
+    this->gameStatus = active;
+}
+
+void Engine::pause() {
+    this->gameStatus = paused;
+}
+
+void Engine::terminate() {
+    this->gameStatus = terminated;
+}
+
+int Engine::close() {
+    GUI_close();
     this->world->terminate();
     glfwTerminate();
     return 0;
@@ -138,8 +159,12 @@ void Engine::gameplayLoop() {
 * 
 * TODO
 */
-void Engine::showDeathScreen() {
-    this->gameStatus = terminated;
+void Engine::showDeathScreen(float pausedTime) {
+    glfwPollEvents();       // interpreta gli input per il menu
+    GUI_lostMenu();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData()); // Renderizza i dati di disegno di ImGui
+    glfwSwapBuffers(window);
+    this->world->render(pausedTime);
 }
 
 bool Engine::isInGame() {

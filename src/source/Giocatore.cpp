@@ -22,6 +22,10 @@ void Giocatore::init(GLuint shaderProg, GLuint uniformModelMatrix, vec2 leftPos,
 
 	CollidingEntity::init(shaderProg, uniformModelMatrix, gcList);
 
+	this->startGame();
+}
+
+void Giocatore::startGame() {
 	this->vita = 1;
 	this->stato = l;
 	this->position = this->leftPos;

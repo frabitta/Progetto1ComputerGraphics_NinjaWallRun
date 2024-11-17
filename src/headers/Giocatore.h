@@ -24,6 +24,9 @@ public:
 
 	/* takes damage */
 	void takeDamage();
+
+	/* setups for a new game */
+	void startGame();
 private:
 	stati stato;
 	vec2 leftPos;

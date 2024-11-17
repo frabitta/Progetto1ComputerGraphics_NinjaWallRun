@@ -100,6 +100,7 @@ int World::init(const int height, const int width, Engine* engine) {
 // TODO
 void World::setupNewGame() {
 	this->spine.init();
+	this->player.startGame();
 }
 
 float generateTimer = 1.0;
