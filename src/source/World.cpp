@@ -12,21 +12,25 @@
 #define SHADER_ENTITY_VERT "entityVert.glsl"
 #define SHADER_ENTITY_FRAG "entityFrag.glsl"
 
-const float bg_R = 0.025, bg_G = 0.020, bg_B = 0.11;
-const vec4 bg_color = vec4(bg_R, bg_G, bg_B, 1.0);
-GLuint UNI_skyProg_screenRes, UNI_skyProg_currentTime;
-GLuint UNI_wallProg_screenRes, UNI_wallProg_currentTime, UNI_wallProg_offset;
-GLuint UNI_entity_MatProj, UNI_entity_MatModel;
+static const float bg_R = 0.025, bg_G = 0.020, bg_B = 0.11;
+static const vec4 bg_color = vec4(bg_R, bg_G, bg_B, 1.0);
+static GLuint UNI_skyProg_screenRes, UNI_skyProg_currentTime;
+static GLuint UNI_wallProg_screenRes, UNI_wallProg_currentTime, UNI_wallProg_offset;
+static GLuint UNI_entity_MatProj, UNI_entity_MatModel;
 
-GraphicComponent spinaGC;
-vec2 leftWallPos;
-vec2 rightWallPos;
+static GraphicComponent spinaGC;
+static vec2 leftWallPos;
+static vec2 rightWallPos;
 
-float maxSpeed = 700.0;
-float fallingSpeed = 300.0;
-float speedIncrease = 5.0;
-float genDelta = 2.0;
-float genDecrease = 0.1;
+/* spine generation variables */
+static float maxSpeed = 700.0;
+static float fallingSpeed = 300.0;
+static float speedIncrease = 5.0;
+static float genDelta = 2.0;
+static float genDecrease = 0.1;
+static float generateTimer = 1.0;
+static float minGenDelta = 0.5;
+static int sideGenProb = 5;
 
 float randomFloat()
 {
@@ -101,9 +105,14 @@ int World::init(const int height, const int width, Engine* engine) {
 void World::setupNewGame() {
 	this->spine.init();
 	this->player.startGame();
+	maxSpeed = 700.0;
+	fallingSpeed = 300.0;
+	speedIncrease = 5.0;
+	genDelta = 2.0;
+	genDecrease = 0.1;
+	generateTimer = 1.0;
 }
 
-float generateTimer = 1.0;
 void World::update(float deltaTime) {
 	// aggiorna posizioni
 	this->player.update(deltaTime);
@@ -127,19 +136,37 @@ void World::update(float deltaTime) {
 	// genera shuriken,spine,monete
 	generateTimer -= deltaTime;
 	if (generateTimer <= 0.0f) {
-		FallingEntity* spinaTest = new FallingEntity;
+		// cout << "timer: " << generateTimer << ", time:" << time << endl;
+		FallingEntity* spinaTemp = new FallingEntity;
 		vec2 genPos = vec2(leftWallPos.x, this->world_height);
 		bool right = false;
-		if (rand() % 2 != 0) {
+		int electedSide = rand() % 10;
+		// cout << "scelto: " << electedSide << ", barrier: " << sideGenProb << endl;
+		if (electedSide > sideGenProb) {
 			genPos.x = rightWallPos.x;
 			right = true;
+			/*
+			if (!lastSideGen) {
+				lastSideGen = true;
+			}
+			*/
+			if (sideGenProb < 10) {
+				sideGenProb += 1;
+			}
 		}
-		spinaTest->init(entityProg, UNI_entity_MatModel, spinaGC, genPos, right, fallingSpeed);
-		this->spine.push(spinaTest);
-		generateTimer = randomFloat() * genDelta + 1.0;
-		genDelta -= genDecrease;
+		else {
+			if (sideGenProb > 0) {
+				sideGenProb -= 1;
+			}
+		}
+		spinaTemp->init(entityProg, UNI_entity_MatModel, spinaGC, genPos, right, fallingSpeed);
+		this->spine.push(spinaTemp);
+		generateTimer = randomFloat() * genDelta + 0.5;
+		if (genDelta > minGenDelta)
+			genDelta -= genDecrease;
 		if (fallingSpeed < maxSpeed)
 			fallingSpeed += speedIncrease;
+		// cout << "new timer:" << generateTimer <<endl;
 	}
 }
 

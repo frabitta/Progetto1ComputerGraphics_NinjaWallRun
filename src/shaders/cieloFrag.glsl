@@ -10,6 +10,8 @@ uniform float currentTime;
 const vec4 starColor = vec4(1.0,1.0,0.0,1.0);
 const float starRadius = 0.003;
 const int starNumber = 200;
+//const float fallingSpeed = 0.005;
+const float fallingSpeed = 0.5;
 
 float random(vec2 n) {
     return fract(sin(dot(n, vec2(12.9898, 78.233))) );
@@ -17,6 +19,13 @@ float random(vec2 n) {
 
 float srandom(in float x) {
   return abs(fract(sin(x) * 43758.5453)) * 2. - 1.;
+}
+
+/* if x goes out of screen it wraps it and put it up again 
+* put it on geogebra to understand
+*/
+float wrap(float x) {
+	return x + 2*floor(abs(x)-floor(abs(x)/2.));
 }
 
 void main()
@@ -34,12 +43,8 @@ void main()
 
         vec2 starPos = vec2(
             srandom(float(i)),
-            srandom(float(i)-starNumber) - currentTime*0.005
+            wrap(srandom(float(i)-starNumber) - (currentTime)*fallingSpeed)
         );
-
-        if (starPos.y < -1.005) {
-            starPos.y = 1.005 + starPos.y + 1;
-        }
 
         // distanza del frammento dalla stella
         float distanceToCenter = length(normalizedCoords - starPos);
