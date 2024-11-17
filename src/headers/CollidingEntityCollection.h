@@ -3,6 +3,7 @@
 #include "CollidingEntity.h"
 #include "BoundingBox.h"
 
+/* collezione di CollidingEntities */
 class CollidingEntityCollection {
 public:
 	/* initializes the collection */
@@ -22,6 +23,8 @@ public:
 	/* destroys the whole collection */
 	void destroy();
 private:
+	/* lista delle entità gestite */
 	vector<CollidingEntity*> entityList;
+	/* lista delle entità da escludere dalle collisioni */
 	vector<bool> ignoreList;
 };

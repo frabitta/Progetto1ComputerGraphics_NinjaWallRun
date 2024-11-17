@@ -10,8 +10,7 @@ uniform float currentTime;
 const vec4 starColor = vec4(1.0,1.0,0.0,1.0);
 const float starRadius = 0.003;
 const int starNumber = 200;
-//const float fallingSpeed = 0.005;
-const float fallingSpeed = 0.5;
+const float fallingSpeed = 0.01;
 
 float random(vec2 n) {
     return fract(sin(dot(n, vec2(12.9898, 78.233))) );

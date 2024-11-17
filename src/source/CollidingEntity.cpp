@@ -19,7 +19,6 @@ void CollidingEntity::updateMatrix() {
 
 void CollidingEntity::render(float time) {
 	glUseProgram(this->shaderProg);
-	// glUniform1f(this->uniformTime, time);
 	glUniformMatrix4fv(this->uniformModelMatrix, 1, GL_FALSE, value_ptr(this->Model));
 	for (int i = 0; i < this->graphicList.size(); i++) {
 		this->graphicList[i].render();

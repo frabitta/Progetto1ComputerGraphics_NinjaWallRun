@@ -3,6 +3,7 @@
 #include "CollidingEntity.h"
 #include "GraphicComponent.h"
 
+/* entità che cade nel mondo */
 class FallingEntity : public CollidingEntity {
 public:
 	/* inizializza le strutture */
@@ -20,6 +21,8 @@ public:
 	/* returns if the entity is still alive */
 	bool isAlive();
 private:
+	/* velocità di caduta */
 	float fallingSpeed;
+	/* se ancora visibile */
 	bool onScreen = true;
 };

@@ -12,12 +12,14 @@
 #define SHADER_ENTITY_VERT "entityVert.glsl"
 #define SHADER_ENTITY_FRAG "entityFrag.glsl"
 
+/* background and shader variables */
 static const float bg_R = 0.025, bg_G = 0.020, bg_B = 0.11;
 static const vec4 bg_color = vec4(bg_R, bg_G, bg_B, 1.0);
 static GLuint UNI_skyProg_screenRes, UNI_skyProg_currentTime;
 static GLuint UNI_wallProg_screenRes, UNI_wallProg_currentTime, UNI_wallProg_offset;
 static GLuint UNI_entity_MatProj, UNI_entity_MatModel;
 
+/* spine variables */
 static GraphicComponent spinaGC;
 static vec2 leftWallPos;
 static vec2 rightWallPos;
@@ -77,27 +79,20 @@ int World::init(const int height, const int width, Engine* engine) {
 	this->wall.loadVertices(vertici, colori, GL_TRIANGLE_FAN, wallProg);
 	
 	// init entities -----------------------
-	leftWallPos = vec2(this->world_width * 0.11, this->world_width * 0.10);
-	rightWallPos = vec2(this->world_width - this->world_width * 0.11, this->world_width * 0.10);
+	leftWallPos = vec2(this->world_width * 0.109 , this->world_width * 0.10);
+	rightWallPos = vec2(this->world_width - this->world_width * 0.109, this->world_width * 0.10);
 	// player
 	this->player.init(entityProg, UNI_entity_MatModel, leftWallPos, rightWallPos);
 	// spina GC
-	vertici.clear();
-	vertici.push_back(vec3(-1, -1, 0));
-	vertici.push_back(vec3(1, -1, 0));
-	vertici.push_back(vec3(0, 1, 0));
-	colori.clear();
-	colori.push_back(vec4(0, 0, 0,1));
-	colori.push_back(vec4(0, 0, 0,1));
-	colori.push_back(vec4(1, 0, 0,1));
+	/*
+	init_plane(vertici, colori,vec2(-1.,-1),vec2(+1.,+1.),vec4(1.,0.5,0.,1.));
+	spinaGC.loadVertices(vertici, colori, GL_TRIANGLE_FAN, entityProg);
+	*/
+	init_triangle(vertici, colori);
 	spinaGC.loadVertices(vertici, colori, GL_TRIANGLES, entityProg);
 	// spine
 	this->spine.init();
-	/*
-	FallingEntity* spinaTest = new FallingEntity;
-	spinaTest->init(entityProg, UNI_entity_MatModel, spinaGC, vec2(leftWallPos.x,this->world_height), 300.0f);
-	this->spine.push(spinaTest);
-	*/
+
 	return 0;
 }
 
@@ -161,12 +156,11 @@ void World::update(float deltaTime) {
 		}
 		spinaTemp->init(entityProg, UNI_entity_MatModel, spinaGC, genPos, right, fallingSpeed);
 		this->spine.push(spinaTemp);
-		generateTimer = randomFloat() * genDelta + 0.5;
+		generateTimer = randomFloat() * genDelta + 0.3 * (maxSpeed - fallingSpeed) / 400 + 0.13;
 		if (genDelta > minGenDelta)
 			genDelta -= genDecrease;
 		if (fallingSpeed < maxSpeed)
 			fallingSpeed += speedIncrease;
-		// cout << "new timer:" << generateTimer <<endl;
 	}
 }
 

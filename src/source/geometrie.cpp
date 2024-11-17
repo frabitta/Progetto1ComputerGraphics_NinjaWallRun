@@ -22,6 +22,17 @@ void init_plane(vector<vec3> &vertici, vector<vec4> &colori, vec2 btm_left, vec2
 	colori.push_back(color);
 }
 
+void init_triangle(vector<vec3>& vertici, vector<vec4>& colori) {
+	vertici.clear();
+	vertici.push_back(vec3(-1, -1, 0));
+	vertici.push_back(vec3(1, -1, 0));
+	vertici.push_back(vec3(0, 1, 0));
+	colori.clear();
+	colori.push_back(vec4(0, 0, 0, 1));
+	colori.push_back(vec4(0, 0, 0, 1));
+	colori.push_back(vec4(1, 0, 0, 1));
+}
+
 void init_curvaHModel(vector<vec3>& vertici, vector<vec4>& colori, const char* curvaFileName)
 {
 	vector<vec2> cp_ver;

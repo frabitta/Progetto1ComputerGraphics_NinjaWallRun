@@ -3,8 +3,10 @@
 #include "GraphicComponent.h"
 #include "CollidingEntity.h"
 
+/* stati nelle quali il Giocatore si può trovare durante la partita (posizione) */
 enum stati {l, moving_r, r, moving_l};
 
+/* entità del giocatore */
 class Giocatore: public CollidingEntity {
 public:
 	/* inizializza le strutture */
@@ -28,8 +30,12 @@ public:
 	/* setups for a new game */
 	void startGame();
 private:
+	/* stato attuale */
 	stati stato;
+	/* posizione nel mondo per stare sulla parete di sinistra*/
 	vec2 leftPos;
+	/* posizione nel mondo per stare sulla parete di destra*/
 	vec2 rightPos;
+	/* punteggio vita */
 	int vita;
 };

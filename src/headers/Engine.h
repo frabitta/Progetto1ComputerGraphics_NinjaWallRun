@@ -10,6 +10,7 @@ enum status {
 // Forward declaration of Engine class
 class World;
 
+/* Motore del gioco, gestisce finestra, mondo di gioco, interazioni */
 class Engine {
 public:
 	/* inizializza il motore di gioco*/
@@ -27,7 +28,9 @@ public:
 	/* pauses the engine, it does nothing until the status changes*/
 	void pause();
 private:
+	/* finestra creata */
 	GLFWwindow* window;
+	/* mondo di gioco in uso*/
 	World* world;
 	/* stato del gioco */
 	status gameStatus;
@@ -40,7 +43,3 @@ private:
 	/* chiude il motore */
 	int close();
 };
-
-
-/* finestra */
-/* mondo di gioco */

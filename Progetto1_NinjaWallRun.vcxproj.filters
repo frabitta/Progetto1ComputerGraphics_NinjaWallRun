@@ -57,9 +57,6 @@
     <ClCompile Include="src\source\World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\inizializzazioniGL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\source\ShaderMaker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,9 +120,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\headers\Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\inizializzazioniGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\headers\ShaderMaker.h">
