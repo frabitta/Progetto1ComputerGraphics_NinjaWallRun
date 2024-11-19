@@ -7,6 +7,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 // used by the callbacks
 static Engine* engine;
 static World* engineWorld;
+static int points = 0;
 
 // public ----------------------------------------------------------------------------
 int Engine::init(const int height, const int width, const char windowTitle[]) {
@@ -48,7 +49,7 @@ void Engine::play() {
             pausedTime = glfwGetTime();
             break;
         case lost:
-            this->showDeathScreen(pausedTime);
+            this->showDeathScreen(pausedTime, points);
             break;
         case paused:
             break;
@@ -59,8 +60,9 @@ void Engine::play() {
     this->close();
 }
 
-void Engine::gameLost() {
+void Engine::gameLost(int punteggio) {
     this->gameStatus = lost;
+    points = punteggio;
 }
 
 void Engine::playAgain() {
@@ -159,9 +161,9 @@ void Engine::gameplayLoop() {
 * 
 * TODO
 */
-void Engine::showDeathScreen(float pausedTime) {
+void Engine::showDeathScreen(float pausedTime, int punteggio) {
     glfwPollEvents();       // interpreta gli input per il menu
-    GUI_lostMenu();
+    GUI_lostMenu(punteggio);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData()); // Renderizza i dati di disegno di ImGui
     glfwSwapBuffers(window);
     this->world->render(pausedTime);

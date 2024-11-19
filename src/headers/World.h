@@ -28,6 +28,8 @@ private:
 	float world_width;
 	/* dimensions of the world*/
 	float world_height;
+	/* tempo di gioco */
+	double world_StartTime;
 
 	/* shader program of the sky backgroud*/
 	GLuint skyProg;

@@ -18,7 +18,7 @@ public:
 	/* fa partire il gioco */
 	void play();
 	/* cambia lo stato della partita in "lost" */
-	void gameLost();
+	void gameLost(int punteggio);
 	/* cambia lo stato in "active" per far partire una nuova partita dopo aver perso */
 	void playAgain();
 	/* termina il motore di gioco */
@@ -37,7 +37,7 @@ private:
 	/* loop del gioco in partita */
 	void gameplayLoop();
 	/* mostra la schermata di morte */
-	void showDeathScreen(float pausedTime);
+	void showDeathScreen(float pausedTime, int punteggio);
 	/* inizializza la finestra OpenGL */
 	int initializeOpenGLWindow(const int height, const int width, const char windowTitle[]);
 	/* chiude il motore */

@@ -22,7 +22,7 @@ public:
 	bool isAlive();
 private:
 	/* velocità di caduta */
-	float fallingSpeed;
+	float fallingSpeed = 10.0;
 	/* se ancora visibile */
 	bool onScreen = true;
 };

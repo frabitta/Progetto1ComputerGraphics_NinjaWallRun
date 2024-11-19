@@ -9,7 +9,7 @@ void FallingEntity::init(GLuint shaderProg, GLuint uniformModelMatrix, GraphicCo
 	this->position = pos + offset;
 	this->fallingSpeed = fallingSpeed;
 	this->size = 50;
-	this->angle = right ? 90 : -90;
+	this->angle = right ? 90.0f : -90.0f;
 	this->updateMatrix();
 
 	this->BB.generateFromVector(gc.getVertices());

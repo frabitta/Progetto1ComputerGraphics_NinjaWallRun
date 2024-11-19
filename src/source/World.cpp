@@ -12,8 +12,17 @@
 #define SHADER_ENTITY_VERT "entityVert.glsl"
 #define SHADER_ENTITY_FRAG "entityFrag.glsl"
 
+#define MAX_SPEED 700.0f
+#define FALLING_SPEED 300.0f
+#define SPEED_INCREASE 5.0f
+#define GEN_DELTA 2.0f
+#define GEN_DECREASE 0.1f
+#define GENERATE_TIMER 1.0f
+#define MIN_GEN_DELTA 0.5f
+#define SIDE_GEN_PROB 5
+
 /* background and shader variables */
-static const float bg_R = 0.025, bg_G = 0.020, bg_B = 0.11;
+static const float bg_R = 0.025f, bg_G = 0.020f, bg_B = 0.11f;
 static const vec4 bg_color = vec4(bg_R, bg_G, bg_B, 1.0);
 static GLuint UNI_skyProg_screenRes, UNI_skyProg_currentTime;
 static GLuint UNI_wallProg_screenRes, UNI_wallProg_currentTime, UNI_wallProg_offset;
@@ -25,14 +34,14 @@ static vec2 leftWallPos;
 static vec2 rightWallPos;
 
 /* spine generation variables */
-static float maxSpeed = 700.0;
-static float fallingSpeed = 300.0;
-static float speedIncrease = 5.0;
-static float genDelta = 2.0;
-static float genDecrease = 0.1;
-static float generateTimer = 1.0;
-static float minGenDelta = 0.5;
-static int sideGenProb = 5;
+static float maxSpeed = MAX_SPEED;
+static float fallingSpeed = FALLING_SPEED;
+static float speedIncrease = SPEED_INCREASE;
+static float genDelta = GEN_DELTA;
+static float genDecrease = GEN_DECREASE;
+static float generateTimer = GENERATE_TIMER;
+static float minGenDelta = MIN_GEN_DELTA;
+static int sideGenProb = SIDE_GEN_PROB;
 
 float randomFloat()
 {
@@ -41,8 +50,8 @@ float randomFloat()
 
 int World::init(const int height, const int width, Engine* engine) {
 	this->engine = engine;
-	this->world_width = width;
-	this->world_height = height;
+	this->world_width = (float)width;
+	this->world_height = (float)height;
 	vector<vec3> vertici = {};
 	vector<vec4> colori = {};
 
@@ -100,12 +109,14 @@ int World::init(const int height, const int width, Engine* engine) {
 void World::setupNewGame() {
 	this->spine.init();
 	this->player.startGame();
-	maxSpeed = 700.0;
-	fallingSpeed = 300.0;
-	speedIncrease = 5.0;
-	genDelta = 2.0;
-	genDecrease = 0.1;
-	generateTimer = 1.0;
+	maxSpeed = MAX_SPEED;
+	fallingSpeed = FALLING_SPEED;
+	speedIncrease = SPEED_INCREASE;
+	genDelta = GEN_DELTA;
+	genDecrease = GEN_DECREASE;
+	generateTimer = GENERATE_TIMER;
+
+	this->world_StartTime = (float)glfwGetTime();
 }
 
 void World::update(float deltaTime) {
@@ -124,27 +135,20 @@ void World::update(float deltaTime) {
 
 	// controlla se il player è in vita, altrimenti fa perdere
 	if (!this->player.isAlive()) {
-		this->engine->gameLost();
+		this->engine->gameLost((int)floor(glfwGetTime() - this->world_StartTime));
 		return;
 	}
 
 	// genera shuriken,spine,monete
 	generateTimer -= deltaTime;
 	if (generateTimer <= 0.0f) {
-		// cout << "timer: " << generateTimer << ", time:" << time << endl;
 		FallingEntity* spinaTemp = new FallingEntity;
 		vec2 genPos = vec2(leftWallPos.x, this->world_height);
 		bool right = false;
 		int electedSide = rand() % 10;
-		// cout << "scelto: " << electedSide << ", barrier: " << sideGenProb << endl;
 		if (electedSide > sideGenProb) {
 			genPos.x = rightWallPos.x;
 			right = true;
-			/*
-			if (!lastSideGen) {
-				lastSideGen = true;
-			}
-			*/
 			if (sideGenProb < 10) {
 				sideGenProb += 1;
 			}
@@ -156,7 +160,7 @@ void World::update(float deltaTime) {
 		}
 		spinaTemp->init(entityProg, UNI_entity_MatModel, spinaGC, genPos, right, fallingSpeed);
 		this->spine.push(spinaTemp);
-		generateTimer = randomFloat() * genDelta + 0.3 * (maxSpeed - fallingSpeed) / 400 + 0.13;
+		generateTimer = randomFloat() * genDelta + 0.3 * (maxSpeed - fallingSpeed) / 400.0f + 0.13f;
 		if (genDelta > minGenDelta)
 			genDelta -= genDecrease;
 		if (fallingSpeed < maxSpeed)

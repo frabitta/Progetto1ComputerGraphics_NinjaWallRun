@@ -1,4 +1,5 @@
 #include "gui.h"
+#include <string>
 
 Engine* runningEngine;
 void GUI_Initialize(GLFWwindow* window, Engine* engine) {
@@ -21,7 +22,7 @@ void GUI_Initialize(GLFWwindow* window, Engine* engine) {
     ImGui_ImplOpenGL3_Init("#version 330 core"); // Inizializza ImGui per OpenGL 3.3
 }
 
-void GUI_lostMenu(void /*int punteggio*/) {
+void GUI_lostMenu(int punteggio) {
     ImGui_ImplGlfw_NewFrame();
     ImGui_ImplOpenGL3_NewFrame(); // Inizia un nuovo frame per ImGui
     ImGui::NewFrame();
@@ -30,6 +31,7 @@ void GUI_lostMenu(void /*int punteggio*/) {
     ImGui::Begin("wanna play?");
 
     ImGui::Text("YOU LOST");
+    ImGui::Text("Points: %d", punteggio);
 
     if (ImGui::Button("play again")) {
         runningEngine->playAgain();

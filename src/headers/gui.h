@@ -6,7 +6,7 @@
 void GUI_Initialize(GLFWwindow* window, Engine* engine);
 
 /* visualizes the Lost menu */
-void GUI_lostMenu(void);
+void GUI_lostMenu(int punteggio);
 
 /* closes the imgui context */
 void GUI_close(void);
