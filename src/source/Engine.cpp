@@ -39,7 +39,7 @@ int Engine::init(const int height, const int width, const char windowTitle[]) {
 
 void Engine::play() {
     float pausedTime = glfwGetTime();;
-    while (this->gameStatus != terminated) {
+    while (this->gameStatus != terminated && !glfwWindowShouldClose(window)) {
         switch (this->gameStatus)
         {
         case active:
